@@ -1,0 +1,28 @@
+{
+    "name": "pacely/mailchimp-apiv3",
+    "description": "Simple API wrapper for Mailchimp API V3",
+	"version": "0.1",
+	"type": "library",
+	"keywords": ["mailchimp", "api", "php", "v3"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Chris Magnussen",
+            "email": "chris@hirvi.no"
+        }
+    ],
+	"autoload": {
+		"psr-4": {
+			"Mailchimp\\": "src/"
+		}
+	},
+    "require": {
+		"php": ">=5.4.0",
+        "guzzlehttp/guzzle": "~5.0",
+        "illuminate/support": "~5.0"
+	},
+	"require-dev": {
+		"phpspec/phpspec": "~2.2"
+	},
+    "minimum-stability": "dev"
+}
