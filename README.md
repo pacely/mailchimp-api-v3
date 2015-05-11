@@ -20,7 +20,7 @@ Add the following to your composer.json
 # Usage
 You are provided with one method: 
 
-    call($resource, $arguments = [], $method = 'GET') // $arguments is used as POST data or GET parameters, depending on the method used.
+    request($resource, $arguments = [], $method = 'GET') // $arguments is used as POST data or GET parameters, depending on the method used.
 
 # Example
 
