@@ -26,11 +26,13 @@ class MailchimpSpec extends ObjectBehavior
 		$this->getEndpoint()->shouldReturn('https://us10.api.mailchimp.com/3.0/');
 	}
 
-	function it_should_return_a_json_object()
+	function it_should_return_a_collection_object()
 	{
 		$this->beConstructedWith('ea400f0d078e0ddddf638e95e69f9b0f-us10');
 
-		$this->request('lists')->shouldReturnAnInstanceOf('Illuminate\Support\Collection');
-		$this->request('lists/a2fbf5901c')->shouldReturnAnInstanceOf('Illuminate\Support\Collection');
+		$this->request('lists', [
+            'fields' => 'lists.id,lists.name,lists.stats.member_count',
+            'count'  => 10
+        ])->shouldReturnAnInstanceOf('Illuminate\Support\Collection');
 	}
 }
