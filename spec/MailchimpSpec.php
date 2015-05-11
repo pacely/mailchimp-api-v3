@@ -30,7 +30,7 @@ class MailchimpSpec extends ObjectBehavior
 	{
 		$this->beConstructedWith('ea400f0d078e0ddddf638e95e69f9b0f-us10');
 
-		$this->call('lists')->shouldReturnAnInstanceOf('Illuminate\Support\Collection');
-		$this->call('lists/a2fbf5901c')->shouldReturnAnInstanceOf('Illuminate\Support\Collection');
+		$this->request('lists')->shouldReturnAnInstanceOf('Illuminate\Support\Collection');
+		$this->request('lists/a2fbf5901c')->shouldReturnAnInstanceOf('Illuminate\Support\Collection');
 	}
 }
