@@ -1,4 +1,4 @@
-# Mailchimp API v3
+# Mailchimp API v3 [![Build Status](https://travis-ci.org/pacely/mailchimp-api-v3.svg?branch=master)](https://travis-ci.org/pacely/mailchimp-api-v3)
 
 Simple PHP wrapper for Mailchimp API v3, used in Pacely(Secret project... Coming soon :-).
 
