@@ -2,7 +2,9 @@
 
 namespace Mailchimp;
 
+use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Collection;
 
 class Mailchimp
@@ -59,19 +61,26 @@ class Mailchimp
      * @param array $arguments
      * @param string $method
      * @return string
+     * @throws Exception
      */
     private function call($resource, $arguments, $method)
     {
-        $request = $this->client->{$method}($this->endpoint . $resource, [
-            'headers' => [
-                'Authorization' => 'apikey ' . $this->apikey
-            ],
-            'body'    => $arguments
-        ]);
+        try {
+            $request = $this->client->{$method}($this->endpoint . $resource, [
+                'headers' => [
+                    'Authorization' => 'apikey ' . $this->apikey,
+                    'Content-type'  => 'application/json'
+                ],
+                'body'    => json_encode($arguments)
+            ]);
 
-        $collection = new Collection($request->json());
+            $collection = new Collection($request->json());
 
-        return $collection->collapse();
+            return $method == 'get' ? $collection->collapse() : $collection;
+
+        } catch (RequestException $e) {
+            throw new Exception($e->getResponse()->getBody());
+        }
     }
 
     /**
