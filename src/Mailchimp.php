@@ -76,7 +76,9 @@ class Mailchimp
 
             $collection = new Collection($request->json());
 
-            return $method == 'get' ? $collection->collapse() : $collection;
+            if ($collection->count() == 1) return $collection->collapse();
+
+            return $collection;
 
         } catch (RequestException $e) {
             throw new Exception($e->getResponse()->getBody());
