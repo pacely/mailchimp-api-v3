@@ -1,8 +1,8 @@
 # Mailchimp API v3 [![Build Status](https://travis-ci.org/pacely/mailchimp-api-v3.svg?branch=master)](https://travis-ci.org/pacely/mailchimp-api-v3)
 
-Simple PHP wrapper for Mailchimp API v3, used in Pacely(Secret project... Coming soon :-).
+Simple PHP wrapper for Mailchimp API v3.
 
-You should read through Mailchimp's API v3 [documentation](http://kb.mailchimp.com/api/?utm_source=apidocs&utm_medium=internal_ad&utm_campaign=api_v3) (I know, it's pretty rough. Should get better soon.). 
+You should read through Mailchimp's API v3 [documentation](http://kb.mailchimp.com/api/) (I know, it's pretty rough. Should get better soon.). 
 To find out which resources you can request, take a look at the [JSON API Schema for Mailchimp](https://us10.api.mailchimp.com/schema/3.0/).
 
 **NOTE**: All queries will return an instance of the [Illuminate\Support\Collection](http://laravel.com/api/master/Illuminate/Support/Collection.html) object, which is really easy to work with.
