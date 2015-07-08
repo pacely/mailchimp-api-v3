@@ -60,7 +60,7 @@ Source: http://kb.mailchimp.com/api/article/api-3-overview
 ### Collection object
 All queries will return an instance of the [Illuminate\Support\Collection](http://laravel.com/api/master/Illuminate/Support/Collection.html) object, which is really easy to work with. If you don't want to use the Collection object however, you can transform it into an array using `$result->toArray()`.
 
-``php
+```php
 $mc = new Mailchimp('<api-key>');
 
 // Get 10 lists starting from offset 10 and include only a specific set of fields
