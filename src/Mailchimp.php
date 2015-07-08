@@ -4,9 +4,18 @@ namespace Mailchimp;
 
 use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Collection;
 
+/**
+ * @method Collection get($resource, array $options = [])
+ * @method Collection head($resource, array $options = [])
+ * @method Collection put($resource, array $options = [])
+ * @method Collection post($resource, array $options = [])
+ * @method Collection patch($resource, array $options = [])
+ * @method Collection delete($resource, array $options = [])
+ */
 class Mailchimp
 {
 
@@ -43,17 +52,13 @@ class Mailchimp
 
     /**
      * @param string $method
-     * @param $resource
+     * @param string $resource
      * @param array $arguments
      * @return string
      */
     public function request($resource, $arguments = [], $method = 'GET')
     {
-        $method = strtolower($method);
-
-        $resource = $this->decorateResource($resource, $arguments, $method);
-
-        return $this->call($resource, $arguments, $method);
+        return $this->call($resource, $arguments, strtolower($method));
     }
 
     /**
@@ -66,21 +71,20 @@ class Mailchimp
     private function call($resource, $arguments, $method)
     {
         try {
-            $request = $this->client->{$method}($this->endpoint . $resource, [
-                'headers' => [
-                    'Authorization' => 'apikey ' . $this->apikey,
-                    'Content-type'  => 'application/json'
-                ],
-                'body'    => json_encode($arguments)
-            ]);
+            $options = $this->getOptions($method, $arguments);
+            $response = $this->client->{$method}($this->endpoint . $resource, $options);
 
-            $collection = new Collection($request->json());
+            $collection = new Collection(json_decode($response->getBody()));
 
-            if ($collection->count() == 1) return $collection->collapse();
+            if ($collection->count() == 1) {
+                return $collection->collapse();
+            }
 
             return $collection;
 
         } catch (RequestException $e) {
+            throw new Exception($e->getResponse()->getBody());
+        } catch (ClientException $e) {
             throw new Exception($e->getResponse()->getBody());
         }
     }
@@ -96,18 +100,45 @@ class Mailchimp
     }
 
     /**
-     * @param $resource
-     * @param $arguments
      * @param $method
-     * @return string
+     * @param $arguments
+     * @return array
      */
-    private function decorateResource($resource, $arguments, $method)
+    private function getOptions($method, $arguments)
     {
-        if ($method == 'get') {
-            $resource .= '?' . http_build_query($arguments);
+        $options = [
+            'headers' => [
+                'Authorization' => 'apikey ' . $this->apikey
+            ]
+        ];
+
+        if (empty($arguments)) {
+            return $options;
         }
 
-        return $resource;
+        if ($method == 'get') {
+            $options['query'] = $arguments;
+        } else {
+            $options['json'] = $arguments;
+        }
+
+        return $options;
     }
 
+    /**
+     * @param string $method
+     * @param array $arguments
+     * @return Collection
+     */
+    public function __call($method, $arguments)
+    {
+        if (count($arguments) < 1) {
+            throw new \InvalidArgumentException('Magic request methods require a URI and optional options array');
+        }
+
+        $resource = $arguments[0];
+        $options = isset($arguments[1]) ? $arguments[1] : [];
+
+        return $this->request($resource, $options, $method);
+    }
 }
