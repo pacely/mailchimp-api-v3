@@ -13,13 +13,6 @@ class MailchimpSpec extends ObjectBehavior
         $this->shouldHaveType('Mailchimp\Mailchimp');
     }
 
-    function it_should_change_datacenter_if_api_key_has_one()
-    {
-        $this->beConstructedWith('ea400f0d078e0ddddf638e95e69f9b0f-us10');
-
-        $this->getEndpoint()->shouldReturn('https://us10.api.mailchimp.com/3.0/');
-    }
-
     function it_should_return_a_collection_object()
     {
         $this->beConstructedWith('ea400f0d078e0ddddf638e95e69f9b0f-us10');
