@@ -7,6 +7,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Collection;
+use InvalidArgumentException;
 
 /**
  * @method Collection get($resource, array $options = [])
@@ -35,6 +36,11 @@ class Mailchimp
      * @var Client
      */
     private $client;
+
+    /**
+     * @var array
+     */
+    private $allowedMethods = ['get', 'head', 'put', 'post', 'patch', 'delete'];
 
     /**
      * @param string $apikey
@@ -89,15 +95,6 @@ class Mailchimp
         }
     }
 
-    /**
-     * Return endpoint
-     *
-     * @return string
-     */
-    public function getEndpoint()
-    {
-        return $this->endpoint;
-    }
 
     /**
      * @param $method
@@ -112,7 +109,7 @@ class Mailchimp
             ]
         ];
 
-        if (empty($arguments)) {
+        if (count($arguments) < 1) {
             return $options;
         }
 
@@ -129,11 +126,17 @@ class Mailchimp
      * @param string $method
      * @param array $arguments
      * @return Collection
+     * @throws Exception
      */
     public function __call($method, $arguments)
     {
         if (count($arguments) < 1) {
-            throw new \InvalidArgumentException('Magic request methods require a URI and optional options array');
+            throw new InvalidArgumentException('Magic request methods require a URI and optional options array');
+        }
+
+        if ( ! in_array($method, $this->allowedMethods))
+        {
+            throw new Exception('Method "'.$method.'" is not supported.');
         }
 
         $resource = $arguments[0];
