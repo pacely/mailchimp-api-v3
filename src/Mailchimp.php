@@ -57,18 +57,24 @@ class Mailchimp
     }
 
     /**
-     * @param string $method
      * @param string $resource
      * @param array $arguments
+     * @param string $method
      * @return string
+     * @throws Exception
      */
     public function request($resource, $arguments = [], $method = 'GET')
     {
+        if ( ! $this->apikey)
+        {
+            throw new Exception('Please provide an API key.');
+        }
+
         return $this->call($resource, $arguments, strtolower($method));
     }
 
     /**
-     * @param $resource
+     * @param string $resource
      * @param array $arguments
      * @param string $method
      * @return string
@@ -80,7 +86,9 @@ class Mailchimp
             $options = $this->getOptions($method, $arguments);
             $response = $this->client->{$method}($this->endpoint . $resource, $options);
 
-            $collection = new Collection(json_decode($response->getBody()));
+            $collection = new Collection(
+                json_decode($response->getBody())
+            );
 
             if ($collection->count() == 1) {
                 return $collection->collapse();
@@ -95,10 +103,17 @@ class Mailchimp
         }
     }
 
+    /**
+     * @return string
+     */
+    public function getEndpoint()
+    {
+        return $this->endpoint;
+    }
 
     /**
-     * @param $method
-     * @param $arguments
+     * @param string $method
+     * @param array $arguments
      * @return array
      */
     private function getOptions($method, $arguments)
@@ -134,9 +149,8 @@ class Mailchimp
             throw new InvalidArgumentException('Magic request methods require a URI and optional options array');
         }
 
-        if ( ! in_array($method, $this->allowedMethods))
-        {
-            throw new Exception('Method "'.$method.'" is not supported.');
+        if ( ! in_array($method, $this->allowedMethods)) {
+            throw new Exception('Method "' . $method . '" is not supported.');
         }
 
         $resource = $arguments[0];
