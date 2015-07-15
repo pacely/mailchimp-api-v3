@@ -2,12 +2,14 @@
 
 namespace Mailchimp;
 
+use BadMethodCallException;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * @method Collection get($resource, array $options = [])
@@ -19,7 +21,6 @@ use InvalidArgumentException;
  */
 class Mailchimp
 {
-
     /**
      * Endpoint for Mailchimp API v3
      *
@@ -43,6 +44,11 @@ class Mailchimp
     private $allowedMethods = ['get', 'head', 'put', 'post', 'patch', 'delete'];
 
     /**
+     * @var array
+     */
+    public $options = [];
+
+    /**
      * @param string $apikey
      */
     public function __construct($apikey = '')
@@ -50,10 +56,11 @@ class Mailchimp
         $this->apikey = $apikey;
         $this->client = new Client();
 
-        if (strstr($this->apikey, '-')) {
-            list(, $dc) = explode('-', $this->apikey);
-            $this->endpoint = str_replace('us1', $dc, $this->endpoint);
-        }
+        $this->detectEndpoint($this->apikey);
+
+        $this->options['headers'] = [
+            'Authorization' => 'apikey ' . $this->apikey
+        ];
     }
 
     /**
@@ -65,12 +72,68 @@ class Mailchimp
      */
     public function request($resource, $arguments = [], $method = 'GET')
     {
-        if ( ! $this->apikey)
-        {
+        if ( ! $this->apikey) {
             throw new Exception('Please provide an API key.');
         }
 
-        return $this->call($resource, $arguments, strtolower($method));
+        return $this->makeRequest($resource, $arguments, strtolower($method));
+    }
+
+    /**
+     * Enable proxy if needed.
+     *
+     * @param string $host
+     * @param int $port
+     * @param bool $ssl
+     * @param string $username
+     * @param string $password
+     * @return string
+     */
+    public function setProxy(
+        $host,
+        $port,
+        $ssl = false,
+        $username = null,
+        $password = null
+    ) {
+        $scheme = ($ssl ? 'https://' : 'http://');
+
+        if ( ! is_null($username)) {
+            return $this->options['proxy'] = sprintf('%s%s:%s@%s:%s', $scheme, $username, $password, $host, $port);
+        }
+
+        return $this->options['proxy'] = sprintf('%s%s:%s', $scheme, $host, $port);
+    }
+
+    /**
+     * @return string
+     */
+    public function getEndpoint()
+    {
+        return $this->endpoint;
+    }
+
+    /**
+     * @param $apikey
+     */
+    public function detectEndpoint($apikey)
+    {
+        if ( ! strstr($apikey, '-')) {
+            throw new InvalidArgumentException('There seems to be an issue with your apikey. Please consult Mailchimp');
+        }
+
+        list(, $dc) = explode('-', $apikey);
+        $this->endpoint = str_replace('us1', $dc, $this->endpoint);
+    }
+
+    /**
+     * @param string $apikey
+     */
+    public function setApiKey($apikey)
+    {
+        $this->detectEndpoint($apikey);
+
+        $this->apikey = $apikey;
     }
 
     /**
@@ -80,7 +143,7 @@ class Mailchimp
      * @return string
      * @throws Exception
      */
-    private function call($resource, $arguments, $method)
+    private function makeRequest($resource, $arguments, $method)
     {
         try {
             $options = $this->getOptions($method, $arguments);
@@ -95,20 +158,17 @@ class Mailchimp
             }
 
             return $collection;
-
         } catch (RequestException $e) {
-            throw new Exception($e->getResponse()->getBody());
+            $response = $e->getResponse();
+
+            if ($response instanceof ResponseInterface) {
+                throw new Exception($e->getResponse()->getBody());
+            }
+
+            throw new Exception($e->getMessage());
         } catch (ClientException $e) {
             throw new Exception($e->getResponse()->getBody());
         }
-    }
-
-    /**
-     * @return string
-     */
-    public function getEndpoint()
-    {
-        return $this->endpoint;
     }
 
     /**
@@ -118,23 +178,17 @@ class Mailchimp
      */
     private function getOptions($method, $arguments)
     {
-        $options = [
-            'headers' => [
-                'Authorization' => 'apikey ' . $this->apikey
-            ]
-        ];
-
         if (count($arguments) < 1) {
-            return $options;
+            return $this->options;
         }
 
         if ($method == 'get') {
-            $options['query'] = $arguments;
+            $this->options['query'] = $arguments;
         } else {
-            $options['json'] = $arguments;
+            $this->options['json'] = $arguments;
         }
 
-        return $options;
+        return $this->options;
     }
 
     /**
@@ -150,7 +204,7 @@ class Mailchimp
         }
 
         if ( ! in_array($method, $this->allowedMethods)) {
-            throw new Exception('Method "' . $method . '" is not supported.');
+            throw new BadMethodCallException('Method "' . $method . '" is not supported.');
         }
 
         $resource = $arguments[0];

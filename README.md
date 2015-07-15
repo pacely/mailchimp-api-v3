@@ -5,10 +5,12 @@
     * [Pagination](#pagination)
     * [Filtering](#filtering)
     * [Partial Response](#partial-response)
+    * [Behind Proxy](#behind-proxy)
 * [Examples](#examples)
     * [Collection object](#collection-object)
     * [Create lists](#create-lists)
     * [Subresources](#subresources)
+    * [Proxy](#proxy)
 * [Further documentation](#further-documentation)
 
 # Installation
@@ -54,6 +56,13 @@ Source: http://kb.mailchimp.com/api/article/api-3-overview
 _To cut down on data transfers, pass a comma separated list of fields to include or exclude from a certain response in the query string. The parameters `fields` and `exclude_fields` are mutually exclusive and will throw an error if a field isn't valid in your request._
 
 Source: http://kb.mailchimp.com/api/article/api-3-overview
+
+### Behind Proxy
+If you are behind a proxy, you can use `setProxy` directly on the class. 
+
+`setProxy(host : string, port : int, [ssl : bool = false], [username = null], [password = null]);`
+
+See the [example](#proxy).
 
 # Examples
 
@@ -128,6 +137,16 @@ $result = $mc->post('lists', [
 ### Subresources
 
 ```php
+$result = $mc->get('lists/e04d611199', [
+    'fields' => 'id,name,stats.member_count'
+]);
+```
+
+### Proxy
+
+```php
+$mc->setProxy('https://127.0.0.1', 10, true, 'username', 'password');
+
 $result = $mc->get('lists/e04d611199', [
     'fields' => 'id,name,stats.member_count'
 ]);
