@@ -158,6 +158,8 @@ class Mailchimp
             }
 
             return $collection;
+        } catch (ClientException $e) {
+            throw new Exception($e->getResponse()->getBody());
         } catch (RequestException $e) {
             $response = $e->getResponse();
 
@@ -166,8 +168,6 @@ class Mailchimp
             }
 
             throw new Exception($e->getMessage());
-        } catch (ClientException $e) {
-            throw new Exception($e->getResponse()->getBody());
         }
     }
 
