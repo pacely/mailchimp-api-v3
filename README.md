@@ -1,6 +1,10 @@
 # Mailchimp API v3 - PHP Wrapper [![Build Status](https://travis-ci.org/pacely/mailchimp-api-v3.svg?branch=master)](https://travis-ci.org/pacely/mailchimp-api-v3)
 
 * [Installation](#installation)
+* [Laravel Users](#laravel-users)
+    * [Service Provider](#service-provider)
+    * [Facade](#facade)
+    * [Configuration](#configuration)
 * [Usage](#usage)
     * [Pagination](#pagination)
     * [Filtering](#filtering)
@@ -22,6 +26,58 @@ Add the following to your composer.json
         "pacely/mailchimp-apiv3": "dev-master"
     }
 }
+```
+
+# Laravel Users
+We've added some classes to help Laravel 5 users make use of the library with ease.
+
+#### Service Provider
+You can register our [service provider](http://laravel.com/docs/5.1/providers) in your `app.php` config file.
+
+```php
+// config/app.php
+'providers' => [
+    ...
+    Mailchimp\MailchimpServiceProvider::class
+]
+```
+
+#### Facade
+If you prefer [facades](http://laravel.com/docs/5.1/facades), make sure you add this as well:
+
+```php
+// config/app.php
+'aliases' => [
+    ...
+    'MC' => Mailchimp\MailchimpFacade::class
+]
+```
+
+*NOTE*: Make sure not to register the facade with the `Mailchimp` alias, as that could potentially clash with the base class.
+
+#### Configuration
+There are only one configuration option you need to fill in. Publish the config by running:
+
+    php artisan vendor:publish
+
+Now, the config file will be located under `config/mailchimp.php`:
+
+```php
+<?php
+
+return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Mailchimp API key
+    |--------------------------------------------------------------------------
+    |
+    | To obtain an API key, go to mailchimp.com under your profile
+    | you will find Extras -> API keys. Paste the key below.
+    |
+    */
+    'apikey' => ''
+];
 ```
 
 # Usage
