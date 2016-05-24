@@ -51,10 +51,10 @@ class Mailchimp
     /**
      * @param string $apikey
      */
-    public function __construct($apikey = '')
+    public function __construct($apikey = '', $clientConfig = null)
     {
         $this->apikey = $apikey;
-        $this->client = new Client();
+        $this->client = new Client($clientConfig);
 
         $this->detectEndpoint($this->apikey);
 
