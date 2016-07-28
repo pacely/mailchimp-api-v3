@@ -178,6 +178,8 @@ class Mailchimp
      */
     private function getOptions($method, $arguments)
     {
+        unset($this->options['json'], $this->options['query']);
+
         if (count($arguments) < 1) {
             return $this->options;
         }
