@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
  */
 class Mailchimp
 {
+
     /**
      * Endpoint for Mailchimp API v3
      *
@@ -50,11 +51,12 @@ class Mailchimp
 
     /**
      * @param string $apikey
+     * @param array $clientOptions
      */
-    public function __construct($apikey = '')
+    public function __construct($apikey = '', $clientOptions = [])
     {
         $this->apikey = $apikey;
-        $this->client = new Client();
+        $this->client = new Client($clientOptions);
 
         $this->detectEndpoint($this->apikey);
 
