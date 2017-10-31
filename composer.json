@@ -31,6 +31,14 @@
     "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"
+        },
+        "laravel": {
+            "providers": [
+                "Mailchimp\\MailchimpServiceProvider"
+            ],
+            "aliases": {
+                "MC": "Mailchimp\\MailchimpFacade"
+            }
         }
     },
     "minimum-stability": "dev"
