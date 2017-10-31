@@ -18,14 +18,10 @@
 * [Further documentation](#further-documentation)
 
 # Installation
-Add the following to your composer.json
+Install the package through Composer:
 
-```json
-{
-    "require": {
-        "pacely/mailchimp-apiv3": "dev-master"
-    }
-}
+```bash
+composer require pacely/mailchimp-apiv3:dev-master
 ```
 
 # Laravel Users
