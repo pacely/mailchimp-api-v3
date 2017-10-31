@@ -58,7 +58,7 @@ If you prefer [facades](http://laravel.com/docs/5.1/facades), make sure you add 
 #### Configuration
 There are only one configuration option you need to fill in. Publish the config by running:
 
-    php artisan vendor:publish
+    php artisan vendor:publish --provider="Mailchimp\MailchimpServiceProvider"
 
 Now, the config file will be located under `config/mailchimp.php`:
 
