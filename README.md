@@ -18,14 +18,10 @@
 * [Further documentation](#further-documentation)
 
 # Installation
-Add the following to your composer.json
+Install the package through Composer:
 
-```json
-{
-    "require": {
-        "pacely/mailchimp-apiv3": "dev-master"
-    }
-}
+```bash
+composer require pacely/mailchimp-apiv3:dev-master
 ```
 
 # Laravel Users
@@ -58,7 +54,7 @@ If you prefer [facades](http://laravel.com/docs/5.1/facades), make sure you add 
 #### Configuration
 There are only one configuration option you need to fill in. Publish the config by running:
 
-    php artisan vendor:publish
+    php artisan vendor:publish --provider="Mailchimp\MailchimpServiceProvider"
 
 Now, the config file will be located under `config/mailchimp.php`:
 
