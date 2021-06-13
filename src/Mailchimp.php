@@ -22,13 +22,18 @@ class Mailchimp
 
     private Client $client;
 
+    /**
+     * @var string[]
+     */
     private array $allowedMethods = ['get', 'head', 'put', 'post', 'patch', 'delete'];
 
+    /**
+     * @var array<string,mixed>
+     */
     public array $options = [];
 
     /**
-     * @param string $apikey
-     * @param array $clientOptions
+     * @param array<string,mixed> $clientOptions
      */
     public function __construct(string $apikey = '', array $clientOptions = [])
     {
@@ -119,13 +124,16 @@ class Mailchimp
             $response = $e->getResponse();
 
             if ($response instanceof ResponseInterface) {
-                throw new Exception($e->getResponse()->getBody());
+                throw new Exception($response->getBody());
             }
 
             throw new Exception($e->getMessage());
         }
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     private function getOptions(string $method, array $arguments): array
     {
         unset($this->options['json'], $this->options['query']);
