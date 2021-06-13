@@ -6,7 +6,6 @@ use Illuminate\Support\ServiceProvider;
 
 class MailchimpServiceProvider extends ServiceProvider
 {
-
     /**
      * Register paths to be published by the publish command.
      *
@@ -15,7 +14,7 @@ class MailchimpServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__ . '/config/mailchimp.php' => config_path('mailchimp.php')
+            __DIR__.'/config/mailchimp.php' => config_path('mailchimp.php'),
         ]);
     }
 

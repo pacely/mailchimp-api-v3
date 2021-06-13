@@ -1,0 +1,22 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Method Mailchimp\\\\Mailchimp\\:\\:__call\\(\\) has parameter \\$arguments with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Mailchimp.php
+
+		-
+			message: "#^Method Mailchimp\\\\Mailchimp\\:\\:getOptions\\(\\) has parameter \\$arguments with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Mailchimp.php
+
+		-
+			message: "#^Method Mailchimp\\\\Mailchimp\\:\\:makeRequest\\(\\) has parameter \\$arguments with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Mailchimp.php
+
+		-
+			message: "#^Method Mailchimp\\\\Mailchimp\\:\\:request\\(\\) has parameter \\$arguments with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Mailchimp.php
+
