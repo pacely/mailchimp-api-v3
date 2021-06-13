@@ -11,14 +11,6 @@ use Illuminate\Support\Collection;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 
-/**
- * @method Collection get($resource, array $options = [])
- * @method Collection head($resource, array $options = [])
- * @method Collection put($resource, array $options = [])
- * @method Collection post($resource, array $options = [])
- * @method Collection patch($resource, array $options = [])
- * @method Collection delete($resource, array $options = [])
- */
 class Mailchimp
 {
     /**
@@ -26,27 +18,27 @@ class Mailchimp
      *
      * @var string
      */
-    private $endpoint = 'https://us1.api.mailchimp.com/3.0/';
+    private string $endpoint = 'https://us1.api.mailchimp.com/3.0/';
 
     /**
      * @var string
      */
-    private $apikey;
+    private string $apikey;
 
     /**
      * @var Client
      */
-    private $client;
+    private Client $client;
 
     /**
      * @var array
      */
-    private $allowedMethods = ['get', 'head', 'put', 'post', 'patch', 'delete'];
+    private array $allowedMethods = ['get', 'head', 'put', 'post', 'patch', 'delete'];
 
     /**
      * @var array
      */
-    public $options = [];
+    public array $options = [];
 
     /**
      * @param string $apikey
