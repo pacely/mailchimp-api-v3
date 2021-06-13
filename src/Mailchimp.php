@@ -21,9 +21,8 @@ use Psr\Http\Message\ResponseInterface;
  */
 class Mailchimp
 {
-
     /**
-     * Endpoint for Mailchimp API v3
+     * Endpoint for Mailchimp API v3.
      *
      * @var string
      */
@@ -61,7 +60,7 @@ class Mailchimp
         $this->detectEndpoint($this->apikey);
 
         $this->options['headers'] = [
-            'Authorization' => 'apikey ' . $this->apikey
+            'Authorization' => 'apikey '.$this->apikey,
         ];
     }
 
@@ -74,7 +73,7 @@ class Mailchimp
      */
     public function request($resource, $arguments = [], $method = 'GET')
     {
-        if ( ! $this->apikey) {
+        if (! $this->apikey) {
             throw new Exception('Please provide an API key.');
         }
 
@@ -100,7 +99,7 @@ class Mailchimp
     ) {
         $scheme = ($ssl ? 'https://' : 'http://');
 
-        if ( ! is_null($username)) {
+        if (! is_null($username)) {
             return $this->options['proxy'] = sprintf('%s%s:%s@%s:%s', $scheme, $username, $password, $host, $port);
         }
 
@@ -120,7 +119,7 @@ class Mailchimp
      */
     public function detectEndpoint($apikey)
     {
-        if ( ! strstr($apikey, '-')) {
+        if (! strstr($apikey, '-')) {
             throw new InvalidArgumentException('There seems to be an issue with your apikey. Please consult Mailchimp');
         }
 
@@ -149,7 +148,7 @@ class Mailchimp
     {
         try {
             $options = $this->getOptions($method, $arguments);
-            $response = $this->client->{$method}($this->endpoint . $resource, $options);
+            $response = $this->client->{$method}($this->endpoint.$resource, $options);
 
             $collection = new Collection(
                 json_decode($response->getBody())
@@ -207,12 +206,12 @@ class Mailchimp
             throw new InvalidArgumentException('Magic request methods require a URI and optional options array');
         }
 
-        if ( ! in_array($method, $this->allowedMethods)) {
-            throw new BadMethodCallException('Method "' . $method . '" is not supported.');
+        if (! in_array($method, $this->allowedMethods)) {
+            throw new BadMethodCallException('Method "'.$method.'" is not supported.');
         }
 
         $resource = $arguments[0];
-        $options = isset($arguments[1]) ? $arguments[1] : [];
+        $options = $arguments[1] ?? [];
 
         return $this->request($resource, $options, $method);
     }
