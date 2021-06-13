@@ -44,7 +44,7 @@ class Mailchimp
      * @param string $apikey
      * @param array $clientOptions
      */
-    public function __construct($apikey = '', $clientOptions = [])
+    public function __construct(string $apikey = '', array $clientOptions = [])
     {
         $this->apikey = $apikey;
         $this->client = new Client($clientOptions);
@@ -70,9 +70,6 @@ class Mailchimp
 
     /**
      * Enable proxy if needed.
-     *
-     * @param string $username
-     * @param string $password
      */
     public function setProxy(
         string $host,
