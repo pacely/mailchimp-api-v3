@@ -68,10 +68,9 @@ class Mailchimp
      * @param string $resource
      * @param array $arguments
      * @param string $method
-     * @return string
      * @throws Exception
      */
-    public function request($resource, $arguments = [], $method = 'GET')
+    public function request(string $resource,array $arguments = [],string $method = 'GET'):Collection
     {
         if (! $this->apikey) {
             throw new Exception('Please provide an API key.');
@@ -91,12 +90,12 @@ class Mailchimp
      * @return string
      */
     public function setProxy(
-        $host,
-        $port,
-        $ssl = false,
-        $username = null,
-        $password = null
-    ) {
+        string $host,
+        int $port,
+        bool $ssl = false,
+        ?string $username = null,
+        ?string $password = null
+    ) :string {
         $scheme = ($ssl ? 'https://' : 'http://');
 
         if (! is_null($username)) {
@@ -109,15 +108,15 @@ class Mailchimp
     /**
      * @return string
      */
-    public function getEndpoint()
+    public function getEndpoint():string
     {
         return $this->endpoint;
     }
 
     /**
-     * @param $apikey
+     * @param string $apikey
      */
-    public function detectEndpoint($apikey)
+    public function detectEndpoint(string $apikey):void
     {
         if (! strstr($apikey, '-')) {
             throw new InvalidArgumentException('There seems to be an issue with your apikey. Please consult Mailchimp');
@@ -130,7 +129,7 @@ class Mailchimp
     /**
      * @param string $apikey
      */
-    public function setApiKey($apikey)
+    public function setApiKey(string $apikey):void
     {
         $this->detectEndpoint($apikey);
 
@@ -141,10 +140,9 @@ class Mailchimp
      * @param string $resource
      * @param array $arguments
      * @param string $method
-     * @return string
      * @throws Exception
      */
-    private function makeRequest($resource, $arguments, $method)
+    private function makeRequest(string $resource,array $arguments,string $method):Collection
     {
         try {
             $options = $this->getOptions($method, $arguments);
@@ -177,7 +175,7 @@ class Mailchimp
      * @param array $arguments
      * @return array
      */
-    private function getOptions($method, $arguments)
+    private function getOptions(string $method,array $arguments):array
     {
         unset($this->options['json'], $this->options['query']);
 
@@ -200,7 +198,7 @@ class Mailchimp
      * @return Collection
      * @throws Exception
      */
-    public function __call($method, $arguments)
+    public function __call(string $method, array $arguments):Collection
     {
         if (count($arguments) < 1) {
             throw new InvalidArgumentException('Magic request methods require a URI and optional options array');
