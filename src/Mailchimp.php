@@ -26,10 +26,6 @@ class Mailchimp
 
     public array $options = [];
 
-    /**
-     * @param string $apikey
-     * @param array $clientOptions
-     */
     public function __construct(string $apikey = '', array $clientOptions = [])
     {
         $this->apikey = $apikey;
