@@ -15,29 +15,15 @@ class Mailchimp
 {
     /**
      * Endpoint for Mailchimp API v3.
-     *
-     * @var string
      */
     private string $endpoint = 'https://us1.api.mailchimp.com/3.0/';
 
-    /**
-     * @var string
-     */
     private string $apikey;
 
-    /**
-     * @var Client
-     */
     private Client $client;
 
-    /**
-     * @var array
-     */
     private array $allowedMethods = ['get', 'head', 'put', 'post', 'patch', 'delete'];
 
-    /**
-     * @var array
-     */
     public array $options = [];
 
     /**
