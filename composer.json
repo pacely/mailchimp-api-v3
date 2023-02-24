@@ -5,14 +5,17 @@
     "keywords": [
         "mailchimp",
         "api",
-        "php",
-        "v3"
+        "php"
     ],
     "license": "MIT",
     "authors": [
         {
             "name": "Chris Magnussen",
             "email": "chris@hirvi.no"
+        },
+        {
+            "name": "Palaniappan P",
+            "email": "palani.p@gmail.com"
         }
     ],
     "autoload": {
@@ -22,8 +25,8 @@
     },
     "require": {
         "php": ">=5.5.0",
-        "guzzlehttp/guzzle": "~5.0|~6.0|^7.0",
-        "illuminate/support": "~5.0|^6.0|^7.0|^8.0|^9.0"
+        "guzzlehttp/guzzle": "^6.0|^7.0",
+        "illuminate/support": "^8.0|^9.0|^10.0"
     },
     "require-dev": {
         "phpspec/phpspec": "~2.2"
