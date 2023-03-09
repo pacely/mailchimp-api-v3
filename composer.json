@@ -23,7 +23,7 @@
     "require": {
         "php": "^8.0",
         "guzzlehttp/guzzle": "^7.0",
-        "laravel/framework": "^9.0"
+        "laravel/framework": "^10.0"
     },
     "require-dev": {
         "nunomaduro/larastan": "^2.5.1",
