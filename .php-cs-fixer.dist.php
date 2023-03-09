@@ -6,7 +6,6 @@ $finder = Symfony\Component\Finder\Finder::create()
     ->notPath('resources/view/mail/*')
     ->in([
         __DIR__ . '/src',
-        __DIR__ . '/tests',
     ])
     ->name('*.php')
     ->notName('*.blade.php')
