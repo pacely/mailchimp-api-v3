@@ -3,3 +3,4 @@
 .idea
 composer.lock
 client.php
+.php-cs-fixer.cache
